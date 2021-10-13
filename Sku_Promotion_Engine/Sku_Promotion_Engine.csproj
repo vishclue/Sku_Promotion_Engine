@@ -44,9 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPromoCodeDetails.cs" />
+    <Compile Include="ISkuDetails.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="PromoCodeDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkuDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
