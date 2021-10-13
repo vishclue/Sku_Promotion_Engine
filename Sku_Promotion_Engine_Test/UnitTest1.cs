@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sku_Promotion_Engine;
 
@@ -22,6 +24,30 @@ namespace Sku_Promotion_Engine_Test
             promoCodeDetails.AddExtraPromoCodes(new char[] {'A', 'B'}, 60);
             int promoCodes = promoCodeDetails.PromoCodeToPriceDictionary.Count;
             Assert.IsTrue(promoCodes == 3, "");
+        }
+
+        [TestMethod]
+        public void Given_SkuDetails_When_Call_GetAllSkuPriceDetails_Then_Reflects_Differrent_Skus()
+        {
+            ISkuDetails skuDetails = new SkuDetails();
+            IDictionary<char, float> skuToPriceDetails = skuDetails.GetAllSkuPriceDetails();
+
+            Assert.IsTrue(skuToPriceDetails.Count == 4, "");
+        }
+
+
+        [TestMethod]
+        public void Given_SkuDetails_When_Call_AddAdditionalSkus_Then_Reflects_newly_added_Sku()
+        {
+            ISkuDetails skuDetails = new SkuDetails();
+            
+            skuDetails.AddAdditionalSkus('E',90);
+
+            IDictionary<char, float> skuToPriceDetails = skuDetails.GetAllSkuPriceDetails();
+
+            Assert.IsTrue(skuToPriceDetails.Count == 5, "");
+
+            Assert.IsTrue(skuToPriceDetails.Keys.Contains('E'), "");
         }
 
 
