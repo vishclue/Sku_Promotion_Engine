@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sku_Promotion_Engine;
 
@@ -21,7 +22,7 @@ namespace Sku_Promotion_Engine_Test
         public void Given_PromoCodeDetails_When_Call_Add_Extra_Promo_Codes_Then_Reflects_Extra_Promo_Codes_Added()
         {
             IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
-            promoCodeDetails.AddExtraPromoCodes(new char[] {'A', 'B'}, 60);
+            promoCodeDetails.AddExtraPromoCodes(new char[] {'A', 'B'}.ToString(), 60);
             int promoCodes = promoCodeDetails.PromoCodeToPriceDictionary.Count;
             Assert.IsTrue(promoCodes == 3, "");
         }
@@ -53,7 +54,8 @@ namespace Sku_Promotion_Engine_Test
         [TestMethod]
         public void Given_PromoCodeProcessor_When_Call_IsPromoCodeApplicable_With_SelectedSkus_Containing_PromoCode_Then_Returns_True()
         {
-            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor();
+            IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
+            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
             bool isPromoCodeApplicable = promoCodeProcessor.IsPromoCodeApplicable(new []{'A','B','C','A','A','D'},new []{'A','A','A'});
             Assert.IsTrue(isPromoCodeApplicable,"");
         }
@@ -62,9 +64,32 @@ namespace Sku_Promotion_Engine_Test
         [TestMethod]
         public void Given_PromoCodeProcessor_When_Call_IsPromoCodeApplicable_With_SelectedSkus_Not_Containing_PromoCode_Then_Returns_True()
         {
-            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor();
+            IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
+            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
             bool isPromoCodeApplicable = promoCodeProcessor.IsPromoCodeApplicable(new[] { 'A', 'B', 'C', 'A', 'A', 'D' }, new[] { 'B','B', 'D' });
             Assert.IsFalse(isPromoCodeApplicable, "");
+        }
+
+        [TestMethod]
+        public void Given_PromoCodeProcessor_When_Call_ApplyPromoCode_With_SelectedSkus_Containing_PromoCode_Then_Returns_filtered_Skus_And_PromoCodeTotalOrderValue()
+        {
+            IPromoCodeDetails promoCodeDetails =  new PromoCodeDetails();
+            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
+            char[] filteredSkus = new char[]{};
+
+            char[] promoCode = new[] {'C', 'D'};
+
+
+            float promoCodeTotalOrderValue = 
+                promoCodeProcessor.ApplyPromoCode(new[] {'A', 'B', 'C', 'A', 'A', 'D'}, promoCode, out filteredSkus);
+
+            float promoCodeValue = promoCodeDetails.PromoCodeToPriceDictionary[new string(promoCode)];
+
+            Assert.IsTrue(promoCodeTotalOrderValue == promoCodeValue,"");
+
+
+
+
         }
     }
 }

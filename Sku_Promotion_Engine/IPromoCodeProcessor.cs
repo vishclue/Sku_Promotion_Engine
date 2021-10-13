@@ -9,5 +9,6 @@ namespace Sku_Promotion_Engine
     interface IPromoCodeProcessor
     {
         bool IsPromoCodeApplicable(char[] allSelectedSkus, char[] promoCode);
+        float ApplyPromoCode(char[] allSelectedSkus, char[] promoCode, out char[] modifiedCarArr);
     }
 }
