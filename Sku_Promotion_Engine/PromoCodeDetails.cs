@@ -10,9 +10,11 @@ namespace Sku_Promotion_Engine
         public PromoCodeDetails()
         {
             m_PromoCodeToPriceDictionary = new Dictionary<char[], float>();
+            m_PromoCodeToPriceDictionary.Add(new char[] { 'A', 'A', 'A' }, 130);
+            m_PromoCodeToPriceDictionary.Add(new char[] { 'C', 'D' }, 50);
         }
 
-        public IDictionary<char[], float> PromoCodeToPriceDictionary
+        IDictionary<char[], float> IPromoCodeDetails.PromoCodeToPriceDictionary
         {
             get { return m_PromoCodeToPriceDictionary; }
             set { m_PromoCodeToPriceDictionary = value; }
@@ -20,10 +22,13 @@ namespace Sku_Promotion_Engine
 
         IDictionary<char[], float> IPromoCodeDetails.GetListOfPromoCodes()
         {
-            m_PromoCodeToPriceDictionary = new Dictionary<char[], float>();
-            m_PromoCodeToPriceDictionary.Add(new char[] { 'A', 'A', 'A' }, 130);
-            m_PromoCodeToPriceDictionary.Add(new char[] { 'C', 'D' }, 50);
+            
             return m_PromoCodeToPriceDictionary;
+        }
+
+        void IPromoCodeDetails.AddExtraPromoCodes(char[] promoCode, float promoCodeDiscount)
+        {
+            m_PromoCodeToPriceDictionary.Add(promoCode, promoCodeDiscount);
         }
 
     }

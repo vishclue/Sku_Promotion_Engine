@@ -9,5 +9,9 @@ namespace Sku_Promotion_Engine
     internal interface IPromoCodeDetails
     {
         IDictionary<char[], float> GetListOfPromoCodes();
+
+        IDictionary<char[], float> PromoCodeToPriceDictionary { get; set; }
+
+        void AddExtraPromoCodes(char[] promoCode, float promoCodeDiscount);
     }
 }

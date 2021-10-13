@@ -14,5 +14,16 @@ namespace Sku_Promotion_Engine_Test
             int promoCodes = promoCodeDetails.GetListOfPromoCodes().Count;
             Assert.IsTrue(promoCodes == 2, "");
         }
+
+        [TestMethod]
+        public void Given_PromoCodeDetails_When_Call_Add_Extra_Promo_Codes_Then_Reflects_Extra_Promo_Codes_Added()
+        {
+            IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
+            promoCodeDetails.AddExtraPromoCodes(new char[] {'A', 'B'}, 60);
+            int promoCodes = promoCodeDetails.PromoCodeToPriceDictionary.Count;
+            Assert.IsTrue(promoCodes == 3, "");
+        }
+
+
     }
 }
