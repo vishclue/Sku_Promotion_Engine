@@ -86,7 +86,26 @@ namespace Sku_Promotion_Engine_Test
             float promoCodeValue = promoCodeDetails.PromoCodeToPriceDictionary[new string(promoCode)];
 
             Assert.IsTrue(promoCodeTotalOrderValue == promoCodeValue,"");
+            
+        }
+          
+        [TestMethod]
+        public void Given_PromoCodeEngine_And_SetOfSelected_Skus_When_Call_GetTotalOrderValue_Then_Returns_Correct_Value()
+        {
+            IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
+            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
+            ISkuDetails skuDetails = new SkuDetails();
 
+            char[] allSelectedSkus = new char[] { 'A', 'B', 'C', 'A', 'A', 'D' };
+
+            char[] promoCode = new[] { 'C', 'D' };
+           
+            IPromoCodeEngine promoCodeEngine = new PromoCodeEngine(promoCodeProcessor,promoCodeDetails, skuDetails);
+            float totalOrderValue = promoCodeEngine.GetTotalOderValue(allSelectedSkus);
+
+            float expectedValue = 230;
+
+            Assert.IsTrue(totalOrderValue == expectedValue , "");
 
 
 

@@ -44,10 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPromoCodeDetails.cs" />
+    <Compile Include="IPromoCodeEngine.cs" />
     <Compile Include="IPromoCodeProcessor.cs" />
     <Compile Include="ISkuDetails.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="PromoCodeDetails.cs" />
+    <Compile Include="PromoCodeEngine.cs" />
     <Compile Include="PromoCodeProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkuDetails.cs" />
