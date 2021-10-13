@@ -50,6 +50,21 @@ namespace Sku_Promotion_Engine_Test
             Assert.IsTrue(skuToPriceDetails.Keys.Contains('E'), "");
         }
 
+        [TestMethod]
+        public void Given_PromoCodeProcessor_When_Call_IsPromoCodeApplicable_With_SelectedSkus_Containing_PromoCode_Then_Returns_True()
+        {
+            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor();
+            bool isPromoCodeApplicable = promoCodeProcessor.IsPromoCodeApplicable(new []{'A','B','C','A','A','D'},new []{'A','A','A'});
+            Assert.IsTrue(isPromoCodeApplicable,"");
+        }
 
+
+        [TestMethod]
+        public void Given_PromoCodeProcessor_When_Call_IsPromoCodeApplicable_With_SelectedSkus_Not_Containing_PromoCode_Then_Returns_True()
+        {
+            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor();
+            bool isPromoCodeApplicable = promoCodeProcessor.IsPromoCodeApplicable(new[] { 'A', 'B', 'C', 'A', 'A', 'D' }, new[] { 'B','B', 'D' });
+            Assert.IsFalse(isPromoCodeApplicable, "");
+        }
     }
 }
