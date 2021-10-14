@@ -48,7 +48,7 @@ namespace Sku_Promotion_Engine_Test
 
             Assert.IsTrue(skuToPriceDetails.Count == 5, "");
 
-            Assert.IsTrue(skuToPriceDetails.Keys.Contains('E'), "Add additional skus must add the extra sku.");
+            Assert.IsTrue(skuToPriceDetails.Keys.Contains('e'), "Add additional skus must add the extra sku.");
         }
 
         [TestMethod]
@@ -138,6 +138,7 @@ namespace Sku_Promotion_Engine_Test
             IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
             IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
             ISkuDetails skuDetails = new SkuDetails();
+            skuDetails.AddAdditionalSkus('e' , 40);
 
             char[] allSelectedSkus = new char[] { 'a', 'b', 'c', 'a', 'a','e', 'd' };
 
@@ -149,9 +150,6 @@ namespace Sku_Promotion_Engine_Test
             float expectedValue = 270;
 
             Assert.IsTrue(totalOrderValue == expectedValue, "Expected value is not matching with actual value.");
-
-
-
         }
     }
 }

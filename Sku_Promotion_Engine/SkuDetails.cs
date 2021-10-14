@@ -13,7 +13,7 @@ namespace Sku_Promotion_Engine
             m_SkuToPriceDictionary.Add('b', 50);
             m_SkuToPriceDictionary.Add('c', 30);
             m_SkuToPriceDictionary.Add('d', 20);
-            m_SkuToPriceDictionary.Add('e', 40);
+            
 
         }
         IDictionary<char, float> ISkuDetails.GetAllSkuPriceDetails()
@@ -23,7 +23,12 @@ namespace Sku_Promotion_Engine
         
         void ISkuDetails.AddAdditionalSkus(char sku, float price)
         {
-            m_SkuToPriceDictionary.Add(sku, price);
+            char skuLowerCase = sku.ToString().ToLowerInvariant().ToCharArray()[0];
+
+            if (m_SkuToPriceDictionary.Keys.Contains(skuLowerCase))
+                throw new ArgumentException("Specified sku already exists.");
+
+            m_SkuToPriceDictionary.Add(skuLowerCase, price);
         }
     }
 }
