@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sku_Promotion_Engine
 {
@@ -10,6 +11,15 @@ namespace Sku_Promotion_Engine
 
         public PromoCodeEngine(IPromoCodeProcessor promoCodeProcessor, IPromoCodeDetails promoCodeDetails, ISkuDetails skuDetails)
         {
+            if(promoCodeProcessor == null)
+                throw new ArgumentNullException(nameof(promoCodeProcessor));
+
+            if (promoCodeDetails == null)
+                throw new ArgumentNullException(nameof(promoCodeDetails));
+
+            if (skuDetails == null)
+                throw new ArgumentNullException(nameof(skuDetails));
+
             m_PromoCodeProcessor = promoCodeProcessor;
             m_PromoCodeDetails = promoCodeDetails;
             m_SkuDetails = skuDetails;
@@ -21,7 +31,7 @@ namespace Sku_Promotion_Engine
 
             float totalOrderValue = 0;
 
-            char[] modifiedSkuArray = selectedSkus;
+            char[] modifiedSkuArray = new string(selectedSkus).ToLowerInvariant().ToCharArray();
 
             foreach (var key in promoCodeToPriceDictionary.Keys)
             {

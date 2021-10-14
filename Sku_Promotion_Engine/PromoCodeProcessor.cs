@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 namespace Sku_Promotion_Engine
 {
@@ -6,24 +7,31 @@ namespace Sku_Promotion_Engine
     {
         private IPromoCodeDetails m_PromoCodeDetails;
         public PromoCodeProcessor(IPromoCodeDetails promoCodeDetails)
-        {
+        {  
             m_PromoCodeDetails = promoCodeDetails;
         }
         bool IPromoCodeProcessor.IsPromoCodeApplicable(char[] allSelectedSkus, char[] promoCode)
         {
+            if(allSelectedSkus.Length == 0)
+                throw new ArgumentException(nameof(allSelectedSkus));
+
             char[] modifiedSkus = allSelectedSkus;
+
+            string modifiedSkuString = new string(modifiedSkus).ToLowerInvariant();
 
             bool found = false;
 
-            for (int i = 0; i < promoCode.Length; i++)
+            char[] promoCodeLowerCase = new string(promoCode).ToLowerInvariant().ToCharArray();
+
+            for (int i = 0; i < promoCodeLowerCase.Length; i++)
             {
-                if (((IList) modifiedSkus).Contains(promoCode[i]))
+                if (modifiedSkuString.Contains(promoCodeLowerCase[i].ToString()))
                 {
                     found = true;
-                    string str = new string(modifiedSkus);
-                    int index = str.IndexOf(promoCode[i]);
-                    str = str.Remove(index, 1);
-                    modifiedSkus = str.ToCharArray();
+                    
+                    int index = modifiedSkuString.IndexOf(promoCodeLowerCase[i]);
+                    modifiedSkuString = modifiedSkuString.Remove(index, 1);
+                    //modifiedSkus = str.ToCharArray();
                 }
                 else
                 {
@@ -37,6 +45,9 @@ namespace Sku_Promotion_Engine
 
         float IPromoCodeProcessor.ApplyPromoCode(char[] allSelectedSkus, char[] promoCode, out char[] modifiedSkus)
         {  
+
+            allSelectedSkus= new string(allSelectedSkus).ToLowerInvariant().ToCharArray();
+            promoCode = new string(promoCode).ToLowerInvariant().ToCharArray();
 
             int numberOfTimesToApplyPromoCode = 0;
             float promoCodeTotalOrderValue = 0;
@@ -52,19 +63,19 @@ namespace Sku_Promotion_Engine
             return promoCodeTotalOrderValue;
         }
 
-        private static char[] GetModifiedSkus(char[] originalCartArr, char[] promoCodeCharArr)
+        private static char[] GetModifiedSkus(char[] modifiedSkus, char[] promoCodeCharArr)
         {
-            string str = new string(originalCartArr);
+            string modifiedSkuString = new string(modifiedSkus);
 
             for (int i = 0; i < promoCodeCharArr.Length; i++)
             {
 
-                int index = str.IndexOf(promoCodeCharArr[i]);
-                str = str.Remove(index, 1);
+                int index = modifiedSkuString.IndexOf(promoCodeCharArr[i]);
+                modifiedSkuString = modifiedSkuString.Remove(index, 1);
             }
 
-            char[] modifiedCartArr = str.ToCharArray();
-            return modifiedCartArr;
+            char[] modifiedSkuArray = modifiedSkuString.ToCharArray();
+            return modifiedSkuArray;
         }
 
     }

@@ -83,7 +83,7 @@ namespace Sku_Promotion_Engine_Test
             float promoCodeTotalOrderValue = 
                 promoCodeProcessor.ApplyPromoCode(new[] {'A', 'B', 'C', 'A', 'A', 'D'}, promoCode, out filteredSkus);
 
-            float promoCodeValue = promoCodeDetails.PromoCodeToPriceDictionary[new string(promoCode)];
+            float promoCodeValue = promoCodeDetails.PromoCodeToPriceDictionary[new string(promoCode).ToLowerInvariant()];
 
             Assert.IsTrue(promoCodeTotalOrderValue == promoCodeValue,"Expected promocode value is not matching with the actual promo code value");
             
@@ -106,6 +106,49 @@ namespace Sku_Promotion_Engine_Test
             float expectedValue = 230;
 
             Assert.IsTrue(totalOrderValue == expectedValue , "Expected value is not matching with actual value.");
+
+
+
+        }
+
+        [TestMethod]
+        public void Given_PromoCodeEngine_And_SetOfSelected_Skus_In_Small_Case_When_Call_GetTotalOrderValue_Then_Returns_Correct_Value()
+        {
+            IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
+            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
+            ISkuDetails skuDetails = new SkuDetails();
+
+            char[] allSelectedSkus = new char[] { 'a', 'b', 'c', 'a', 'a', 'd' };
+
+
+            IPromoCodeEngine promoCodeEngine = new PromoCodeEngine(promoCodeProcessor, promoCodeDetails, skuDetails);
+            float totalOrderValue = promoCodeEngine.GetTotalOderValue(allSelectedSkus);
+
+            float expectedValue = 230;
+
+            Assert.IsTrue(totalOrderValue == expectedValue, "Expected value is not matching with actual value.");
+
+
+
+        }
+
+        [TestMethod]
+        public void Given_PromoCodeEngine_And_SetOfSelected_Skus_When_Add_Extra_PromoCode_And_then_Call_GetTotalOrderValue_Then_Returns_Correct_Value()
+        {
+            IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
+            IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
+            ISkuDetails skuDetails = new SkuDetails();
+
+            char[] allSelectedSkus = new char[] { 'a', 'b', 'c', 'a', 'a','e', 'd' };
+
+            promoCodeDetails.AddExtraPromoCodes("ae",70);
+
+            IPromoCodeEngine promoCodeEngine = new PromoCodeEngine(promoCodeProcessor, promoCodeDetails, skuDetails);
+            float totalOrderValue = promoCodeEngine.GetTotalOderValue(allSelectedSkus);
+
+            float expectedValue = 270;
+
+            Assert.IsTrue(totalOrderValue == expectedValue, "Expected value is not matching with actual value.");
 
 
 

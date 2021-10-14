@@ -10,8 +10,8 @@ namespace Sku_Promotion_Engine
         public PromoCodeDetails()
         {
             m_PromoCodeToPriceDictionary = new Dictionary<string, float>();
-            m_PromoCodeToPriceDictionary.Add("AAA", 130);
-            m_PromoCodeToPriceDictionary.Add("CD", 50);
+            m_PromoCodeToPriceDictionary.Add("aaa", 130);
+            m_PromoCodeToPriceDictionary.Add("cd", 50);
         }
 
         IDictionary<string, float> IPromoCodeDetails.PromoCodeToPriceDictionary
@@ -27,7 +27,7 @@ namespace Sku_Promotion_Engine
 
         void IPromoCodeDetails.AddExtraPromoCodes(string promoCode, float promoCodeDiscount)
         {
-            m_PromoCodeToPriceDictionary.Add(promoCode, promoCodeDiscount);
+            m_PromoCodeToPriceDictionary.Add(promoCode.ToLowerInvariant(), promoCodeDiscount);
         }
 
     }
