@@ -15,7 +15,7 @@ namespace Sku_Promotion_Engine_Test
         {
             IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
             int promoCodes = promoCodeDetails.GetListOfPromoCodes().Count;
-            Assert.IsTrue(promoCodes == 2, "");
+            Assert.IsTrue(promoCodes == 2, "Default promocode count must be 2");
         }
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace Sku_Promotion_Engine_Test
             IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
             promoCodeDetails.AddExtraPromoCodes(new char[] {'A', 'B'}.ToString(), 60);
             int promoCodes = promoCodeDetails.PromoCodeToPriceDictionary.Count;
-            Assert.IsTrue(promoCodes == 3, "");
+            Assert.IsTrue(promoCodes == 3, "Extra promo code additions is not reflecting properly.");
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace Sku_Promotion_Engine_Test
             ISkuDetails skuDetails = new SkuDetails();
             IDictionary<char, float> skuToPriceDetails = skuDetails.GetAllSkuPriceDetails();
 
-            Assert.IsTrue(skuToPriceDetails.Count == 4, "");
+            Assert.IsTrue(skuToPriceDetails.Count == 4, "skudetails must give a default skus supported.");
         }
 
 
@@ -48,7 +48,7 @@ namespace Sku_Promotion_Engine_Test
 
             Assert.IsTrue(skuToPriceDetails.Count == 5, "");
 
-            Assert.IsTrue(skuToPriceDetails.Keys.Contains('E'), "");
+            Assert.IsTrue(skuToPriceDetails.Keys.Contains('E'), "Add additional skus must add the extra sku.");
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace Sku_Promotion_Engine_Test
             IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
             IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
             bool isPromoCodeApplicable = promoCodeProcessor.IsPromoCodeApplicable(new []{'A','B','C','A','A','D'},new []{'A','A','A'});
-            Assert.IsTrue(isPromoCodeApplicable,"");
+            Assert.IsTrue(isPromoCodeApplicable,"Promocode must be applicable if selectedSkus contains the respective promocode.");
         }
 
 
@@ -67,7 +67,7 @@ namespace Sku_Promotion_Engine_Test
             IPromoCodeDetails promoCodeDetails = new PromoCodeDetails();
             IPromoCodeProcessor promoCodeProcessor = new PromoCodeProcessor(promoCodeDetails);
             bool isPromoCodeApplicable = promoCodeProcessor.IsPromoCodeApplicable(new[] { 'A', 'B', 'C', 'A', 'A', 'D' }, new[] { 'B','B', 'D' });
-            Assert.IsFalse(isPromoCodeApplicable, "");
+            Assert.IsFalse(isPromoCodeApplicable, "Promocode is should not be applicable if selected skus does not contain the promocode.");
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace Sku_Promotion_Engine_Test
 
             float promoCodeValue = promoCodeDetails.PromoCodeToPriceDictionary[new string(promoCode)];
 
-            Assert.IsTrue(promoCodeTotalOrderValue == promoCodeValue,"");
+            Assert.IsTrue(promoCodeTotalOrderValue == promoCodeValue,"Expected promocode value is not matching with the actual promo code value");
             
         }
           
@@ -105,7 +105,7 @@ namespace Sku_Promotion_Engine_Test
 
             float expectedValue = 230;
 
-            Assert.IsTrue(totalOrderValue == expectedValue , "");
+            Assert.IsTrue(totalOrderValue == expectedValue , "Expected value is not matching with actual value.");
 
 
 
